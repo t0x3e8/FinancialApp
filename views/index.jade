@@ -1,5 +1,13 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
+  .container-fluid.px-4
+    h1.mt-4= title
+    ol.breadcrumb.mb-4
+      li.breadcrumb-item
+        a(href='index.html') Dashboard
+      li.breadcrumb-item.active Static Navigation
+    .card.mb-4
+      .card-body
+        p.mb-0
+          | Hellow Kitty
