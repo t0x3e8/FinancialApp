@@ -7,7 +7,7 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/SalaryCalculator', function(req, res, next) {
-  res.render('index', { title: 'Kalkulator wynagrodzenia' });
+  res.render('salarycalculator', { title: 'Kalkulator wynagrodzenia' });
 });
 
 router.get('/privacypolicy', function(req, res, next) {

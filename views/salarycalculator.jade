@@ -1,0 +1,12 @@
+extends layout
+
+block content
+  .container-fluid.px-4
+    h1.mt-4= title
+    .card.mb-4
+      .card-body
+        p.mb-0
+          #salaryCalculatorApp
+
+block scripts
+  script(src='/app.js')
