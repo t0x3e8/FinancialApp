@@ -1,4 +1,4 @@
-import EmploymentContractCalculator from "../src/logic/EmploymentContractCalculator";
+import EmploymentContractCalculator from "../src/logic/EmploymentContractCalculator.js";
 
 var eccData = {
   sameSalaryInMonths: {
