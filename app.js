@@ -1,23 +1,24 @@
 import createError from "http-errors";
-import express, { json, urlencoded, staticExpress } from "express";
-import { join } from "path";
+import express from "express";
 import cookieParser from "cookie-parser";
 import logger from "morgan";
-
-import indexRouter from "./routes/index";
-import usersRouter from "./routes/users";
+import path from "path";
+import { fileURLToPath } from "url";
+import indexRouter from "./routes/index.js";
+import usersRouter from "./routes/users.js";
 
 var app = express();
 
 // view engine setup
-app.set("views", join(__dirname, "views"));
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+app.set("views", path.resolve(__dirname, "views"));
 app.set("view engine", "jade");
 
 app.use(logger("dev"));
-app.use(json());
-app.use(urlencoded({ extended: false }));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(staticExpress(join(__dirname, "public")));
+app.use(express.static(path.resolve(__dirname, "public")));
 
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
