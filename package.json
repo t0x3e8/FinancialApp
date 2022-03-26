@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "start": "node ./bin/www",
-    "build": "webpack --config webpack.dev.js",
+    "build:dev": "webpack --mode=development --config webpack.dev.js",
     "dev": "concurrently \"npm run build\" \"npm run start\"",
     "test": "jest"
   },

@@ -1,29 +1,28 @@
-/* global __dirname */
-
-import { resolve } from "path";
+import path from "path";
 import { VueLoaderPlugin } from "vue-loader";
+import { fileURLToPath } from "url";
 
-export const mode = "development";
-export const entry = "./src/main.js";
-export const output = {
-  path: resolve(__dirname, "public"),
-  publicPath: "/public/javascripts",
-  filename: "app.js",
-};
-export const module = {
-  rules: [
-    {
-      test: /\.vue$/u,
-      loader: "vue-loader",
-    },
-    {
-      test: /\.js$/u,
-      exclude: "/node_modules/",
-      loader: "babel-loader",
-      options: {
-        presets: [["@babel/preset-env", { targets: "defaults" }]],
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+export default {
+  mode: "development",
+  entry: "./src/main.js",
+  output: {
+    path: path.resolve(__dirname, "./public"),
+    filename: "app.js",
+  },
+  module: {
+    rules: [
+      {
+        test: /\.vue$/u,
+        loader: "vue-loader",
       },
-    },
-  ],
+      {
+        test: /\.js$/u,
+        exclude: "/node_modules/",
+        loader: "babel-loader",
+      },
+    ],
+  },
+  devtool: "source-map",
+  plugins: [new VueLoaderPlugin()],
 };
-export const plugins = [new VueLoaderPlugin()];
