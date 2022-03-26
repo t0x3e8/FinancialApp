@@ -1,3 +1,5 @@
+/* global __dirname */
+
 import { resolve } from "path";
 import { VueLoaderPlugin } from "vue-loader";
 
