@@ -1,5 +1,6 @@
 import path from "path";
 import { VueLoaderPlugin } from "vue-loader";
+import ESLintPlugin from "eslint-webpack-plugin";
 import { fileURLToPath } from "url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -25,5 +26,5 @@ export default {
     ],
   },
   devtool: "source-map",
-  plugins: [new VueLoaderPlugin()],
+  plugins: [new VueLoaderPlugin(), new ESLintPlugin()],
 };
