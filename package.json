@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node ./bin/www",
     "build:dev": "webpack --mode=development --config webpack.dev.js",
-    "dev": "concurrently \"npm run build:dev\" \"npm run start\"",
+    "build:devWatch": "webpack --mode=development --config webpack.dev.js --watch",
+    "dev": "concurrently \"npm run build:devWatch\" \"npm run start\"",
     "test": "jest"
   },
   "dependencies": {

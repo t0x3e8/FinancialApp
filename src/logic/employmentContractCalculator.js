@@ -8,8 +8,7 @@ class EmploymentContractCalculator {
       contractData = {};
     }
 
-    this.salaryInMonths = _.isNull(contractData.salaryInMonths) || _.isUndefined(contractData.salaryInMonths) ? [] : contractData.salaryInMonths;
-
+    this.salaryInMonths = [];
     this.accSalaryinMonths = [];
     this.socialInsurance = {
       retirementInsurance: [],
@@ -18,6 +17,16 @@ class EmploymentContractCalculator {
       healthInsurance: [],
       total: [],
     };
+  }
+
+  setSalary(salary) {
+    if (_.isNull(salary) || _.isUndefined(salary)) {
+      salary = 0;
+    }
+
+    for (var i = 0; i < 12; i++) {
+      this.salaryInMonths[i] = salary;
+    }
 
     this.calculate();
   }
