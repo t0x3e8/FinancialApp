@@ -10,6 +10,7 @@ class EmploymentContractCalculator {
 
     this.salaryInMonths = [];
     this.accSalaryinMonths = [];
+    this.costOfGettingIncome = [];
     this.socialInsurance = {
       retirementInsurance: [],
       disabilityInsurance: [],
@@ -19,16 +20,24 @@ class EmploymentContractCalculator {
     };
   }
 
-  setSalary(salary) {
-    if (_.isNull(salary) || _.isUndefined(salary)) {
-      salary = 0;
+  setSalary(data) {
+    var salary = 0;
+    var costOfGettingIncome = 0;
+
+    if (!_.isNull(data) && !_.isUndefined(data)) {
+      if (!_.isNull(data.salary) && !_.isUndefined(data.salary)) {
+        salary = data.salary;
+      }
+
+      if (!_.isNull(data.costOfGettingIncome) && !_.isUndefined(data.costOfGettingIncome)) {
+        costOfGettingIncome = data.costOfGettingIncome;
+      }
     }
 
     for (var i = 0; i < 12; i++) {
       this.salaryInMonths[i] = salary;
+      this.costOfGettingIncome[i] = costOfGettingIncome;
     }
-
-    this.calculate();
   }
 
   calculateAccumulatedSalaries() {
