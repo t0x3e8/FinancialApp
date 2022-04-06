@@ -1,25 +1,25 @@
 <template>
   <div>
-    <form class="needs-validation" novalidate>
+    <form class="needs-validation form-inline" novalidate>
       <div class="form-row mb-3">
-        <div class="row">
+        <div class="form-row">
           <div class="col-md-4">
             <label for="monthlySalary">Miesięczne wynagrodzenie brutto:</label>
           </div>
         </div>
-        <div class="row">
+        <div class="form-row">
           <div class="col-md-2 pe-0">
             <input id="monthlySalary" v-model="grossSalary" type="number" class="form-control" placeholder="Wynagrodzenie brutto" required />
           </div>
         </div>
       </div>
       <div class="form-row mb-3">
-        <div class="row">
+        <div class="form-row">
           <div class="col-md-4">
             <label for="costOfGettingIncome">Koszty Uzyskania Przychodu (KUP):</label>
           </div>
         </div>
-        <div class="row mb-1">
+        <div class="form-row mb-1">
           <div class="col-md-2 pe-0">
             <select id="costOfGettingIncome" v-model="costOfGettingIncome" class="custom-select form-control">
               <option selected value="250">250 zł</option>
@@ -43,7 +43,7 @@
             </button>
           </div>
         </div>
-        <div class="row">
+        <div class="form-row">
           <div class="col">
             <div id="costOfGettingIncomeCollapse" class="collapse">
               <div class="card card-body border-light">
@@ -56,7 +56,32 @@
       </div>
       <div class="form-row mb-3 form-check">
         <input id="26yearsoldCheckbox" v-model="is26YearsOld" class="form-check-input" type="checkbox" value="" />
-        <label class="form-check-label" for="26yearsoldCheckbox"> Ukończony 26 rok życia </label>
+        <label class="form-check-label" for="26yearsoldCheckbox"> Czy ukończony 26 rok życia? </label>
+      </div>
+      <div class="form-row mb-3 form-check">
+        <div class="form-row mb-3">
+          <div class="col-md-4">
+            <input id="employeeCapitalPlansCheckbox" v-model="isEmployeeCapitalPlans" class="form-check-input" type="checkbox" value="" />
+            <label class="form-check-label" for="employeeCapitalPlansCheckbox"> Pracowniczym Planie Kapitałowym (PPK) </label>
+          </div>
+        </div>
+
+        <div v-show="isEmployeeCapitalPlans">
+          <div class="form-row">
+            <div class="col-md-2">
+              <label class="form-check-label" for="employeeCapitalPlansRanger"> % wymiar składki pracownika </label>
+              <input id="employeeCapitalPlansRanger" v-model="employeeCapitalPlansLevel" type="range" class="form-range" min="2" max="4" step="0.5"/>
+              <output>{{ employeeCapitalPlansLevel }}%</output>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="col-md-2">
+              <label class="form-check-label" for="employerCapitalPlansRanger"> % wymiar składki pracodawcy </label>
+              <input id="employerCapitalPlansRanger" v-model="employerCapitalPlansLevel" type="range" class="form-range" min="1.5" max="4" step="0.5" />
+              <output>{{ employerCapitalPlansLevel }}%</output>
+            </div>
+          </div>
+        </div>
       </div>
       <button class="btn btn-primary" type="button" @click="calculate">Oblicz</button>
     </form>
@@ -100,7 +125,10 @@
       return {
         grossSalary: 3400,
         costOfGettingIncome: 250,
-        is26YearsOld: false, 
+        is26YearsOld: false,
+        isEmployeeCapitalPlans: true,
+        employeeCapitalPlansLevel: 2,
+        employerCapitalPlansLevel: 1.5,
         formatter: new Intl.NumberFormat("pl-PL", {
           style: "currency",
           currency: "PLN",
