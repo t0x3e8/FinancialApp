@@ -47,12 +47,16 @@
           <div class="col">
             <div id="costOfGettingIncomeCollapse" class="collapse">
               <div class="card card-body border-light">
-                Pracownik mieszkający w miejscowości, w której wykonuje pracę zarobkową 250 zł miesięcznie. <br/>
-                Pracownik mieszkający – stale bądź tymczasowo – poza miejscowością, w której wykonuje pracę zarobkową 300 zł miesięcznie. 
+                Pracownik mieszkający w miejscowości, w której wykonuje pracę zarobkową 250 zł miesięcznie. <br />
+                Pracownik mieszkający – stale bądź tymczasowo – poza miejscowością, w której wykonuje pracę zarobkową 300 zł miesięcznie.
               </div>
             </div>
           </div>
         </div>
+      </div>
+      <div class="form-row mb-3 form-check">
+        <input id="26yearsoldCheckbox" v-model="is26YearsOld" class="form-check-input" type="checkbox" value="" />
+        <label class="form-check-label" for="26yearsoldCheckbox"> Ukończony 26 rok życia </label>
       </div>
       <button class="btn btn-primary" type="button" @click="calculate">Oblicz</button>
     </form>
@@ -96,6 +100,7 @@
       return {
         grossSalary: 3400,
         costOfGettingIncome: 250,
+        is26YearsOld: false, 
         formatter: new Intl.NumberFormat("pl-PL", {
           style: "currency",
           currency: "PLN",
@@ -130,8 +135,8 @@
       buildSalaryData() {
         const salaryData = {
           salary: this.grossSalary,
-          costOfGettingIncome: this.costOfGettingIncome
-        }
+          costOfGettingIncome: this.costOfGettingIncome,
+        };
 
         return salaryData;
       },
