@@ -1,85 +1,68 @@
 <template>
   <div>
-    <form class="needs-validation form-inline" novalidate>
-      <div class="form-row mb-3">
-        <div class="form-row">
-          <div class="col-md-4">
-            <label for="monthlySalary">Miesięczne wynagrodzenie brutto:</label>
-          </div>
+    <form class="needs-validation" novalidate>
+      <div class="form-group row mb-3">
+        <label for="monthlySalary" class="col-md-4 col-12 col-form-label-lg">Miesięczne wynagrodzenie brutto:</label>
+        <div class="col-md-2 col-sm-4 col-5 d-flex align-items-center">
+          <input id="monthlySalary" v-model="grossSalary" type="number" class="form-control form-control-lg" required />
         </div>
-        <div class="form-row">
-          <div class="col-md-2 pe-0">
-            <input id="monthlySalary" v-model="grossSalary" type="number" class="form-control" placeholder="Wynagrodzenie brutto" required />
+      </div>
+      <div class="form-group row mb-3">
+        <label for="costOfGettingIncome" class="col-12 col-md-4 col-form-label-lg">Koszty Uzyskania Przychodu (KUP):</label>
+        <div class="col-md-2 col-sm-4 col-5 d-flex align-items-center">
+          <select id="costOfGettingIncome" v-model="costOfGettingIncome" class="form-control form-control-lg">
+            <option selected value="250">250 zł</option>
+            <option value="300">300 zł</option>
+          </select>
+        </div>
+        <div class="col-sm-1 col-2 p-0 m-1 d-flex justify-content-left">
+          <button class="btn btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#costOfGettingIncomeCollapse" aria-controls="costOfGettingIncomeCollapse">
+            <svg class="bi bi-exclamation-triangle text-success" width="24" height="24" fill="currentColor" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M9.05.435c-.58-.58-1.52-.58-2.1 0L.436 6.95c-.58.58-.58 1.519 0 2.098l6.516 6.516c.58.58 1.519.58 2.098 0l6.516-6.516c.58-.58.58-1.519 0-2.098L9.05.435zM5.495 6.033a.237.237 0 0 1-.24-.247C5.35 4.091 6.737 3.5 8.005 3.5c1.396 0 2.672.73 2.672 2.24 0 1.08-.635 1.594-1.244 2.057-.737.559-1.01.768-1.01 1.486v.105a.25.25 0 0 1-.25.25h-.81a.25.25 0 0 1-.25-.246l-.004-.217c-.038-.927.495-1.498 1.168-1.987.59-.444.965-.736.965-1.371 0-.825-.628-1.168-1.314-1.168-.803 0-1.253.478-1.342 1.134-.018.137-.128.25-.266.25h-.825zm2.325 6.443c-.584 0-1.009-.394-1.009-.927 0-.552.425-.94 1.01-.94.609 0 1.028.388 1.028.94 0 .533-.42.927-1.029.927z"
+              />
+            </svg>
+          </button>
+        </div>
+        <div id="costOfGettingIncomeCollapse" class="row collapse">
+          <p class="card card-body border-light">
+            Pracownik mieszkający w miejscowości, w której wykonuje pracę zarobkową 250 zł miesięcznie. <br />
+            Pracownik mieszkający – stale bądź tymczasowo – poza miejscowością, w której wykonuje pracę zarobkową 300 zł miesięcznie.
+          </p>
+        </div>
+      </div>
+      <div class="form-group row mb-3">
+        <label for="26yearsoldCheckbox" class="col-md-4 col-6 col-form-label-lg">Czy ukończony 26 rok życia?</label>
+        <div class="col-md-1 col-4 d-flex justify-content-left align-items-center">
+          <div class="form-check">
+            <input id="26yearsoldCheckbox" v-model="is26YearsOld" class="form-check-input position-static" type="checkbox" value="" />
           </div>
         </div>
       </div>
-      <div class="form-row mb-3">
-        <div class="form-row">
-          <div class="col-md-4">
-            <label for="costOfGettingIncome">Koszty Uzyskania Przychodu (KUP):</label>
-          </div>
-        </div>
-        <div class="form-row mb-1">
-          <div class="col-md-2 pe-0">
-            <select id="costOfGettingIncome" v-model="costOfGettingIncome" class="custom-select form-control">
-              <option selected value="250">250 zł</option>
-              <option value="300">300 zł</option>
-            </select>
-          </div>
-          <div class="col-md-1 p-0">
-            <button
-              class="btn btn-sm"
-              type="button"
-              data-bs-toggle="collapse"
-              data-bs-target="#costOfGettingIncomeCollapse"
-              aria-expanded="false"
-              aria-controls="costOfGettingIncomeCollapse"
-            >
-              <svg class="bi bi-exclamation-triangle text-success" width="24" height="24" fill="currentColor" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
-                <path
-                  d="M9.05.435c-.58-.58-1.52-.58-2.1 0L.436 6.95c-.58.58-.58 1.519 0 2.098l6.516 6.516c.58.58 1.519.58 2.098 0l6.516-6.516c.58-.58.58-1.519 0-2.098L9.05.435zM5.495 6.033a.237.237 0 0 1-.24-.247C5.35 4.091 6.737 3.5 8.005 3.5c1.396 0 2.672.73 2.672 2.24 0 1.08-.635 1.594-1.244 2.057-.737.559-1.01.768-1.01 1.486v.105a.25.25 0 0 1-.25.25h-.81a.25.25 0 0 1-.25-.246l-.004-.217c-.038-.927.495-1.498 1.168-1.987.59-.444.965-.736.965-1.371 0-.825-.628-1.168-1.314-1.168-.803 0-1.253.478-1.342 1.134-.018.137-.128.25-.266.25h-.825zm2.325 6.443c-.584 0-1.009-.394-1.009-.927 0-.552.425-.94 1.01-.94.609 0 1.028.388 1.028.94 0 .533-.42.927-1.029.927z"
-                />
-              </svg>
-            </button>
-          </div>
-        </div>
-        <div class="form-row">
-          <div class="col">
-            <div id="costOfGettingIncomeCollapse" class="collapse">
-              <div class="card card-body border-light">
-                Pracownik mieszkający w miejscowości, w której wykonuje pracę zarobkową 250 zł miesięcznie. <br />
-                Pracownik mieszkający – stale bądź tymczasowo – poza miejscowością, w której wykonuje pracę zarobkową 300 zł miesięcznie.
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="form-row mb-3 form-check">
-        <input id="26yearsoldCheckbox" v-model="is26YearsOld" class="form-check-input" type="checkbox" value="" />
-        <label class="form-check-label" for="26yearsoldCheckbox"> Czy ukończony 26 rok życia? </label>
-      </div>
-      <div class="form-row mb-3 form-check">
-        <div class="form-row mb-3">
-          <div class="col-md-4">
-            <input id="employeeCapitalPlansCheckbox" v-model="isEmployeeCapitalPlans" class="form-check-input" type="checkbox" value="" />
-            <label class="form-check-label" for="employeeCapitalPlansCheckbox"> Pracowniczym Planie Kapitałowym (PPK) </label>
+      <div class="form-group row mb-3">
+        <label for="employeeCapitalPlansCheckbox" class="col-md-4 col-6 col-form-label-lg">PPK?</label>
+        <div class="col-md-1 col-4 d-flex justify-content-left align-items-center">
+          <div class="form-check">
+            <input id="employeeCapitalPlansCheckbox" v-model="isEmployeeCapitalPlans" class="form-check-input position-static" type="checkbox" value="" />
           </div>
         </div>
 
         <div v-show="isEmployeeCapitalPlans">
-          <div class="form-row">
-            <div class="col-md-2">
-              <label class="form-check-label" for="employeeCapitalPlansRanger"> % wymiar składki pracownika </label>
-              <input id="employeeCapitalPlansRanger" v-model="employeeCapitalPlansLevel" type="range" class="form-range" min="2" max="4" step="0.5"/>
-              <output>{{ employeeCapitalPlansLevel }}%</output>
+          <div class="form-group row mb-3 d-flex">
+            <div class="justify-content-right col-md-2 col-12 offset-md-1">
+              <label class="col-form-label-sm" for="employeeCapitalPlansRanger">% wymiar składki pracownika</label>
             </div>
-          </div>
-          <div class="form-row">
-            <div class="col-md-2">
-              <label class="form-check-label" for="employerCapitalPlansRanger"> % wymiar składki pracodawcy </label>
-              <input id="employerCapitalPlansRanger" v-model="employerCapitalPlansLevel" type="range" class="form-range" min="1.5" max="4" step="0.5" />
-              <output>{{ employerCapitalPlansLevel }}%</output>
+            <div class="col-md-1 col-4 d-flex align-items-center">
+              <input id="employeeCapitalPlansRanger" v-model="employeeCapitalPlansLevel" class="form-range" type="range" min="2" max="4" step="0.5" />
             </div>
+            <output class="col-md-1 col-1 d-flex align-items-center">{{ employeeCapitalPlansLevel }}%</output>
+            <div class="justify-content-right col-md-2 col-12">
+              <label class="col-form-label-sm" for="employerCapitalPlansRanger">% wymiar składki pracodawcy</label>
+            </div>
+            <div class="col-md-1 col-4 d-flex align-items-center">
+              <input id="employerCapitalPlansRanger" v-model="employerCapitalPlansLevel" class="form-range" type="range" min="1.5" max="4" step="0.5" />
+            </div>
+            <output class="col-md-1 col-1 d-flex align-items-center">{{ employerCapitalPlansLevel }}%</output>
           </div>
         </div>
       </div>
