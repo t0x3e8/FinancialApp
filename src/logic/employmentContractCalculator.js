@@ -55,13 +55,13 @@ class EmploymentContractCalculator {
         this.socialInsurance.retirementInsurance[index] = Math.round(salary * 0.0976);
         this.socialInsurance.disabilityInsurance[index] = Math.round(salary * 0.015);
       } else {
-        var deltaSalary = salary - this.accSalaryinMonths[index] - SocialInsuranceAnnualLimit;
-        if (deltaSalary < 0) {
+        var deltaSalary = (this.accSalaryinMonths[index] - salary) - SocialInsuranceAnnualLimit;
+        if (deltaSalary > 0) {
           this.socialInsurance.retirementInsurance[index] = 0;
           this.socialInsurance.disabilityInsurance[index] = 0;
         } else {
-          this.socialInsurance.retirementInsurance[index] = Math.round(deltaSalary * 0.0976);
-          this.socialInsurance.disabilityInsurance[index] = Math.round(deltaSalary * 0.015);
+          this.socialInsurance.retirementInsurance[index] = -Math.round(deltaSalary * 0.0976);
+          this.socialInsurance.disabilityInsurance[index] = -Math.round(deltaSalary * 0.015);
         }
       }
 

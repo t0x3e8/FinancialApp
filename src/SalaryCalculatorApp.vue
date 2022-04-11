@@ -154,7 +154,7 @@
 
       calculate() {
         this.calculator.setSalary(this.buildSalaryData());
-        console.log("calculated" + this.grossSalary);
+        this.calculator.calculate();
       },
     },
   };
