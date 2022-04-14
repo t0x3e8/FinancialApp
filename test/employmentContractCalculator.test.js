@@ -16,9 +16,11 @@ var eccData = {
       costOfGettingIncome: [300, 300, 300, 300, 300, 300, 300, 300, 300, 300, 300, 300],
       employeeCapitalPlans: [75, 75, 75, 75, 75, 75, 75, 75, 75, 75, 75, 75],
       employerCapitalPlans: [100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100],
+      income: [4014, 4014, 4014, 4014, 4014, 4014, 4014, 4014, 4014, 4014, 4014, 4014],
+      incomeAcc: [4014, 8028, 12042, 16056, 20070, 24084, 28098, 32112, 36126, 40140, 44154, 48168],
     },
     {
-      salaryData: { salary: 20000, costOfGettingIncome: 1000, employeeCapitalPlans: 0.5, employerCapitalPlans: 1 },
+      salaryData: { salary: 20000, costOfGettingIncome: 250, employeeCapitalPlans: 0.5, employerCapitalPlans: 1 },
       salaryinMonths: [20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000],
       accSalaryinMonths: [20000, 40000, 60000, 80000, 100000, 120000, 140000, 160000, 180000, 200000, 220000, 240000],
       retirementInsurance: [1952, 1952, 1952, 1952, 1952, 1952, 1952, 1952, 1724, 0, 0, 0],
@@ -26,9 +28,11 @@ var eccData = {
       sicknessInsurance: [490, 490, 490, 490, 490, 490, 490, 490, 490, 490, 490, 490],
       healthInsurance: [1553, 1553, 1553, 1553, 1553, 1553, 1553, 1553, 1553, 1576, 1755, 1755, 1755],
       total: [4295, 4295, 4295, 4295, 4295, 4295, 4295, 4295, 4055, 2245, 2245, 2245],
-      costOfGettingIncome: [1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000],
+      costOfGettingIncome: [250, 250, 250, 250, 250, 250, 250, 250, 250, 250, 250, 250],
       employeeCapitalPlans: [100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100],
       employerCapitalPlans: [200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200],
+      income: [17008, 17008, 17008, 17008, 17008, 17008, 17008, 17008, 17271, 19260, 19260, 19260],
+      incomeAcc: [17008, 34016, 51024, 68032, 85040, 102048, 119056, 136064, 153335, 172595, 191855, 211115],
     },
   ],
   zeroValues: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -47,7 +51,8 @@ test("If no input is specified, set the default values.", () => {
   expect(ecc.socialInsurance.total).toHaveLength(0);
   expect(ecc.costOfGettingIncome).toHaveLength(0);
   expect(ecc.employeeCapitalPlans).toHaveLength(0);
-  expect(ecc.employerCapitalPlans).toHaveLength(0);
+  expect(ecc.income).toHaveLength(0);
+  expect(ecc.incomeAcc).toHaveLength(0);
 });
 
 test("If 'SalaryInMonths' input is specified, set default values.", () => {
@@ -63,6 +68,8 @@ test("If 'SalaryInMonths' input is specified, set default values.", () => {
   expect(ecc.costOfGettingIncome).toHaveLength(0);
   expect(ecc.employeeCapitalPlans).toHaveLength(0);
   expect(ecc.employerCapitalPlans).toHaveLength(0);
+  expect(ecc.income).toHaveLength(0);
+  expect(ecc.incomeAcc).toHaveLength(0);
 });
 
 test("If 'salaryData' input is undefined or null, then 0 values.", () => {
@@ -141,6 +148,8 @@ test.each(eccData.sets)("If setSalary is define then calculate for each month va
   expect(ecc.costOfGettingIncome).toHaveLength(12);
   expect(ecc.employeeCapitalPlans).toHaveLength(12);
   expect(ecc.employerCapitalPlans).toHaveLength(12);
+  expect(ecc.income).toHaveLength(0);
+  expect(ecc.incomeAcc).toHaveLength(0);
 
   ecc.calculate();
   expect(ecc.salaryInMonths).toEqual(expect.arrayContaining(eccInput.salaryinMonths));
@@ -153,4 +162,6 @@ test.each(eccData.sets)("If setSalary is define then calculate for each month va
   expect(ecc.costOfGettingIncome).toEqual(expect.arrayContaining(eccInput.costOfGettingIncome));
   expect(ecc.employeeCapitalPlans).toEqual(expect.arrayContaining(eccInput.employeeCapitalPlans));
   expect(ecc.employerCapitalPlans).toEqual(expect.arrayContaining(eccInput.employerCapitalPlans));
+  expect(ecc.income).toEqual(expect.arrayContaining(eccInput.income));
+  expect(ecc.incomeAcc).toEqual(expect.arrayContaining(eccInput.incomeAcc));
 });
