@@ -1,12 +1,11 @@
 /* global test, expect */
 
 import EmploymentContractCalculator from "../src/logic/employmentContractCalculator.js";
-import _ from "underscore";
 
 var eccData = {
   sets: [
     {
-      salaryData: { salary: 5000, costOfGettingIncome: 300 },
+      salaryData: { salary: 5000, costOfGettingIncome: 300, employeeCapitalPlans: 1.5, employerCapitalPlans: 2 },
       salaryinMonths: [5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000],
       accSalaryinMonths: [5000, 10000, 15000, 20000, 25000, 30000, 35000, 40000, 45000, 50000, 55000, 60000],
       retirementInsurance: [488, 488, 488, 488, 488, 488, 488, 488, 488, 488, 488, 488],
@@ -15,9 +14,11 @@ var eccData = {
       healthInsurance: [388, 388, 388, 388, 388, 388, 388, 388, 388, 388, 388, 388],
       total: [1074, 1074, 1074, 1074, 1074, 1074, 1074, 1074, 1074, 1074, 1074, 1074],
       costOfGettingIncome: [300, 300, 300, 300, 300, 300, 300, 300, 300, 300, 300, 300],
+      employeeCapitalPlans: [75, 75, 75, 75, 75, 75, 75, 75, 75, 75, 75, 75],
+      employerCapitalPlans: [100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100],
     },
     {
-      salaryData: { salary: 20000, costOfGettingIncome: 1000 },
+      salaryData: { salary: 20000, costOfGettingIncome: 1000, employeeCapitalPlans: 0.5, employerCapitalPlans: 1 },
       salaryinMonths: [20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000],
       accSalaryinMonths: [20000, 40000, 60000, 80000, 100000, 120000, 140000, 160000, 180000, 200000, 220000, 240000],
       retirementInsurance: [1952, 1952, 1952, 1952, 1952, 1952, 1952, 1952, 1724, 0, 0, 0],
@@ -26,6 +27,8 @@ var eccData = {
       healthInsurance: [1553, 1553, 1553, 1553, 1553, 1553, 1553, 1553, 1553, 1576, 1755, 1755, 1755],
       total: [4295, 4295, 4295, 4295, 4295, 4295, 4295, 4295, 4055, 2245, 2245, 2245],
       costOfGettingIncome: [1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000],
+      employeeCapitalPlans: [100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100],
+      employerCapitalPlans: [200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200],
     },
   ],
   zeroValues: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -43,6 +46,8 @@ test("If no input is specified, set the default values.", () => {
   expect(ecc.socialInsurance.healthInsurance).toHaveLength(0);
   expect(ecc.socialInsurance.total).toHaveLength(0);
   expect(ecc.costOfGettingIncome).toHaveLength(0);
+  expect(ecc.employeeCapitalPlans).toHaveLength(0);
+  expect(ecc.employerCapitalPlans).toHaveLength(0);
 });
 
 test("If 'SalaryInMonths' input is specified, set default values.", () => {
@@ -56,6 +61,8 @@ test("If 'SalaryInMonths' input is specified, set default values.", () => {
   expect(ecc.socialInsurance.healthInsurance).toHaveLength(0);
   expect(ecc.socialInsurance.total).toHaveLength(0);
   expect(ecc.costOfGettingIncome).toHaveLength(0);
+  expect(ecc.employeeCapitalPlans).toHaveLength(0);
+  expect(ecc.employerCapitalPlans).toHaveLength(0);
 });
 
 test("If 'salaryData' input is undefined or null, then 0 values.", () => {
@@ -98,6 +105,27 @@ test("If 'salaryData' input is undefined or null, then 0 values.", () => {
   ecc7.setSalary({ salary: 100, costOfGettingIncome: 299 });
   expect(ecc7.salaryInMonths).toContain(100);
   expect(ecc7.costOfGettingIncome).toContain(299);
+
+  const ecc8 = new EmploymentContractCalculator();
+  ecc8.setSalary({ salary: 100, costOfGettingIncome: 299, employeeCapitalPlans: null, employerCapitalPlans: null });
+  expect(ecc8.salaryInMonths).toContain(100);
+  expect(ecc8.costOfGettingIncome).toContain(299);
+  expect(ecc8.employeeCapitalPlans).toEqual(expect.arrayContaining(eccData.zeroValues));
+  expect(ecc8.employerCapitalPlans).toEqual(expect.arrayContaining(eccData.zeroValues));
+
+  const ecc9 = new EmploymentContractCalculator();
+  ecc9.setSalary({ salary: 100, costOfGettingIncome: 299, employeeCapitalPlans: undefined, employerCapitalPlans: undefined });
+  expect(ecc8.salaryInMonths).toContain(100);
+  expect(ecc8.costOfGettingIncome).toContain(299);
+  expect(ecc8.employeeCapitalPlans).toEqual(expect.arrayContaining(eccData.zeroValues));
+  expect(ecc8.employerCapitalPlans).toEqual(expect.arrayContaining(eccData.zeroValues));
+
+  const ecc10 = new EmploymentContractCalculator();
+  ecc10.setSalary({ salary: 100, costOfGettingIncome: 299, employeeCapitalPlans: 1.5, employerCapitalPlans: 2 });
+  expect(ecc10.salaryInMonths).toContain(100);
+  expect(ecc10.costOfGettingIncome).toContain(299);
+  expect(ecc10.employeeCapitalPlans).toContain(1.5);
+  expect(ecc10.employerCapitalPlans).toContain(2);
 });
 
 test.each(eccData.sets)("If setSalary is define then calculate for each month values.", (eccInput) => {
@@ -111,6 +139,8 @@ test.each(eccData.sets)("If setSalary is define then calculate for each month va
   expect(ecc.socialInsurance.healthInsurance).toHaveLength(0);
   expect(ecc.socialInsurance.total).toHaveLength(0);
   expect(ecc.costOfGettingIncome).toHaveLength(12);
+  expect(ecc.employeeCapitalPlans).toHaveLength(12);
+  expect(ecc.employerCapitalPlans).toHaveLength(12);
 
   ecc.calculate();
   expect(ecc.salaryInMonths).toEqual(expect.arrayContaining(eccInput.salaryinMonths));
@@ -121,4 +151,6 @@ test.each(eccData.sets)("If setSalary is define then calculate for each month va
   expect(ecc.socialInsurance.healthInsurance).toEqual(expect.arrayContaining(eccInput.healthInsurance));
   expect(ecc.socialInsurance.total).toEqual(expect.arrayContaining(eccInput.total));
   expect(ecc.costOfGettingIncome).toEqual(expect.arrayContaining(eccInput.costOfGettingIncome));
+  expect(ecc.employeeCapitalPlans).toEqual(expect.arrayContaining(eccInput.employeeCapitalPlans));
+  expect(ecc.employerCapitalPlans).toEqual(expect.arrayContaining(eccInput.employerCapitalPlans));
 });

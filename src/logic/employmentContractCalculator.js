@@ -18,11 +18,15 @@ class EmploymentContractCalculator {
       healthInsurance: [],
       total: [],
     };
+    this.employeeCapitalPlans = [];
+    this.employerCapitalPlans = [];
   }
 
   setSalary(data) {
     var salary = 0;
     var costOfGettingIncome = 0;
+    var employeeCapitalPlans = 0;
+    var employerCapitalPlans = 0;
 
     if (!_.isNull(data) && !_.isUndefined(data)) {
       if (!_.isNull(data.salary) && !_.isUndefined(data.salary)) {
@@ -32,11 +36,21 @@ class EmploymentContractCalculator {
       if (!_.isNull(data.costOfGettingIncome) && !_.isUndefined(data.costOfGettingIncome)) {
         costOfGettingIncome = data.costOfGettingIncome;
       }
+
+      if (!_.isNull(data.employeeCapitalPlans) && !_.isUndefined(data.employeeCapitalPlans)) {
+        employeeCapitalPlans = data.employeeCapitalPlans;
+      }
+
+      if (!_.isNull(data.employerCapitalPlans) && !_.isUndefined(data.employerCapitalPlans)) {
+        employerCapitalPlans = data.employerCapitalPlans;
+      }
     }
 
     for (var i = 0; i < 12; i++) {
       this.salaryInMonths[i] = salary;
       this.costOfGettingIncome[i] = costOfGettingIncome;
+      this.employeeCapitalPlans[i] = salary * employeeCapitalPlans / 100;
+      this.employerCapitalPlans[i] = salary * employerCapitalPlans / 100;
     }
   }
 
@@ -49,7 +63,7 @@ class EmploymentContractCalculator {
     });
   }
 
-  calculateSociatInsurance() {
+  calculateSocialInsurance() {
     _.each(this.salaryInMonths, (salary, index) => {
       if (this.accSalaryinMonths[index] < SocialInsuranceAnnualLimit) {
         this.socialInsurance.retirementInsurance[index] = Math.round(salary * 0.0976);
@@ -80,7 +94,7 @@ class EmploymentContractCalculator {
 
   calculate() {
     this.calculateAccumulatedSalaries();
-    this.calculateSociatInsurance();
+    this.calculateSocialInsurance();
   }
 }
 

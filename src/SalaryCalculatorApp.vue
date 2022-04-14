@@ -84,6 +84,7 @@
             <th scope="col">Chorobowa</th>
             <th scope="col">Zdrowotna</th>
             <th scope="col">KUP</th>
+            <th scope="col">PPK</th>
           </tr>
         </thead>
         <tbody>
@@ -95,6 +96,7 @@
             <td>{{ item.sickness }}</td>
             <td>{{ item.health }}</td>
             <td>{{ item.costOfGettingIncome }}</td>
+            <td>{{ item.employeeCapitalPlans }}</td>
           </tr>
         </tbody>
       </table>
@@ -138,6 +140,7 @@
             sickness: this.formatter.format(this.calculator.socialInsurance.sicknessInsurance[i]),
             health: this.formatter.format(this.calculator.socialInsurance.healthInsurance[i]),
             costOfGettingIncome: this.formatter.format(this.calculator.costOfGettingIncome[i]),
+            employeeCapitalPlans: this.formatter.format(this.calculator.employeeCapitalPlans[i]),
           };
         }
         return data;
@@ -152,6 +155,8 @@
         const salaryData = {
           salary: this.grossSalary,
           costOfGettingIncome: this.costOfGettingIncome,
+          employeeCapitalPlans: this.employeeCapitalPlansLevel,
+          employerCapitalPlans: this.employerCapitalPlansLevel
         };
 
         return salaryData;
