@@ -84,7 +84,8 @@
             <th scope="col">Chorobowa</th>
             <th scope="col">Zdrowotna</th>
             <th scope="col">KUP</th>
-            <th scope="col">PPK</th>
+            <th v-show="isEmployeeCapitalPlans" scope="col">PPK</th>
+            <th scope="col">Dochód</th>
           </tr>
         </thead>
         <tbody>
@@ -96,7 +97,8 @@
             <td>{{ item.sickness }}</td>
             <td>{{ item.health }}</td>
             <td>{{ item.costOfGettingIncome }}</td>
-            <td>{{ item.employeeCapitalPlans }}</td>
+            <td v-show="isEmployeeCapitalPlans">{{ item.employeeCapitalPlans }}</td>
+            <td>{{ item.income }}</td>
           </tr>
         </tbody>
       </table>
@@ -141,6 +143,7 @@
             health: this.formatter.format(this.calculator.socialInsurance.healthInsurance[i]),
             costOfGettingIncome: this.formatter.format(this.calculator.costOfGettingIncome[i]),
             employeeCapitalPlans: this.formatter.format(this.calculator.employeeCapitalPlans[i]),
+            income: this.formatter.format(this.calculator.income[i]),
           };
         }
         return data;
@@ -155,8 +158,8 @@
         const salaryData = {
           salary: this.grossSalary,
           costOfGettingIncome: this.costOfGettingIncome,
-          employeeCapitalPlans: this.employeeCapitalPlansLevel,
-          employerCapitalPlans: this.employerCapitalPlansLevel
+          employeeCapitalPlans: this.isEmployeeCapitalPlans ? this.employeeCapitalPlansLevel : 0,
+          employerCapitalPlans: this.isEmployeeCapitalPlans ? this.employerCapitalPlansLevel : 0
         };
 
         return salaryData;

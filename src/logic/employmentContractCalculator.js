@@ -20,6 +20,8 @@ class EmploymentContractCalculator {
     };
     this.employeeCapitalPlans = [];
     this.employerCapitalPlans = [];
+    this.income = [];
+    this.incomeAcc = [];
   }
 
   setSalary(data) {
@@ -49,8 +51,8 @@ class EmploymentContractCalculator {
     for (var i = 0; i < 12; i++) {
       this.salaryInMonths[i] = salary;
       this.costOfGettingIncome[i] = costOfGettingIncome;
-      this.employeeCapitalPlans[i] = salary * employeeCapitalPlans / 100;
-      this.employerCapitalPlans[i] = salary * employerCapitalPlans / 100;
+      this.employeeCapitalPlans[i] = (salary * employeeCapitalPlans) / 100;
+      this.employerCapitalPlans[i] = (salary * employerCapitalPlans) / 100;
     }
   }
 
@@ -63,13 +65,32 @@ class EmploymentContractCalculator {
     });
   }
 
+  calculateIncome() {
+    var incomeAcc = 0;
+    var income = 0;
+
+    _.each(this.salaryInMonths, (salary, i) => {
+      income =
+        salary -
+        this.socialInsurance.retirementInsurance[i] -
+        this.socialInsurance.disabilityInsurance[i] -
+        this.socialInsurance.sicknessInsurance[i] -
+        this.costOfGettingIncome[i];
+
+      incomeAcc += income;
+
+      this.income[i] = income;
+      this.incomeAcc[i] = incomeAcc;
+    });
+  }
+
   calculateSocialInsurance() {
     _.each(this.salaryInMonths, (salary, index) => {
       if (this.accSalaryinMonths[index] < SocialInsuranceAnnualLimit) {
         this.socialInsurance.retirementInsurance[index] = Math.round(salary * 0.0976);
         this.socialInsurance.disabilityInsurance[index] = Math.round(salary * 0.015);
       } else {
-        var deltaSalary = (this.accSalaryinMonths[index] - salary) - SocialInsuranceAnnualLimit;
+        var deltaSalary = this.accSalaryinMonths[index] - salary - SocialInsuranceAnnualLimit;
         if (deltaSalary > 0) {
           this.socialInsurance.retirementInsurance[index] = 0;
           this.socialInsurance.disabilityInsurance[index] = 0;
@@ -95,6 +116,7 @@ class EmploymentContractCalculator {
   calculate() {
     this.calculateAccumulatedSalaries();
     this.calculateSocialInsurance();
+    this.calculateIncome();
   }
 }
 
