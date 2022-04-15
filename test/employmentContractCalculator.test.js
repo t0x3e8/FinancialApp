@@ -26,7 +26,7 @@ var eccData = {
       retirementInsurance: [1952, 1952, 1952, 1952, 1952, 1952, 1952, 1952, 1724, 0, 0, 0],
       disabilityInsurance: [300, 300, 300, 300, 300, 300, 300, 300, 265, 0, 0, 0],
       sicknessInsurance: [490, 490, 490, 490, 490, 490, 490, 490, 490, 490, 490, 490],
-      healthInsurance:[1553, 1553, 1553, 1553, 1553, 1553, 1553, 1553, 1577, 1756, 1756, 1756],
+      healthInsurance: [1553, 1553, 1553, 1553, 1553, 1553, 1553, 1553, 1577, 1756, 1756, 1756],
       total: [4295, 4295, 4295, 4295, 4295, 4295, 4295, 4295, 4056, 2246, 2246, 2246],
       costOfGettingIncome: [250, 250, 250, 250, 250, 250, 250, 250, 250, 250, 250, 250],
       employeeCapitalPlans: [100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100],
@@ -38,103 +38,122 @@ var eccData = {
   zeroValues: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 };
 
-test("If no input is specified, set the default values.", () => {
-  const ecc = new EmploymentContractCalculator();
+describe("ctor()", () => {
+  test("Given null input for calculator initialization Then calculator should initialize empty collections.", () => {
+    const ecc = new EmploymentContractCalculator();
 
-  expect(ecc.salaryInMonths).toEqual(expect.arrayContaining([]));
-  expect(ecc.accSalaryinMonths).toHaveLength(0);
-  expect(ecc.accSalaryinMonths).toHaveLength(0);
-  expect(ecc.socialInsurance.retirementInsurance).toHaveLength(0);
-  expect(ecc.socialInsurance.disabilityInsurance).toHaveLength(0);
-  expect(ecc.socialInsurance.sicknessInsurance).toHaveLength(0);
-  expect(ecc.socialInsurance.healthInsurance).toHaveLength(0);
-  expect(ecc.socialInsurance.total).toHaveLength(0);
-  expect(ecc.costOfGettingIncome).toHaveLength(0);
-  expect(ecc.employeeCapitalPlans).toHaveLength(0);
-  expect(ecc.reliefForMiddleClass).toHaveLength(0);
-  expect(ecc.income).toHaveLength(0);
-  expect(ecc.incomeAcc).toHaveLength(0);
+    expect(ecc.salaryInMonths).toEqual(expect.arrayContaining([]));
+    expect(ecc.accSalaryinMonths).toHaveLength(0);
+    expect(ecc.accSalaryinMonths).toHaveLength(0);
+    expect(ecc.socialInsurance.retirementInsurance).toHaveLength(0);
+    expect(ecc.socialInsurance.disabilityInsurance).toHaveLength(0);
+    expect(ecc.socialInsurance.sicknessInsurance).toHaveLength(0);
+    expect(ecc.socialInsurance.healthInsurance).toHaveLength(0);
+    expect(ecc.socialInsurance.total).toHaveLength(0);
+    expect(ecc.costOfGettingIncome).toHaveLength(0);
+    expect(ecc.employeeCapitalPlans).toHaveLength(0);
+    expect(ecc.reliefForMiddleClass).toHaveLength(0);
+    expect(ecc.income).toHaveLength(0);
+    expect(ecc.incomeAcc).toHaveLength(0);
+  });
+  
+  test("Given correct input for calculator initialization Then calculator should initialize empty collections.", () => {
+    const ecc = new EmploymentContractCalculator(eccData.sets[0].salaryData);
+
+    expect(ecc.salaryInMonths).toHaveLength(0);
+    expect(ecc.accSalaryinMonths).toHaveLength(0);
+    expect(ecc.socialInsurance.retirementInsurance).toHaveLength(0);
+    expect(ecc.socialInsurance.disabilityInsurance).toHaveLength(0);
+    expect(ecc.socialInsurance.sicknessInsurance).toHaveLength(0);
+    expect(ecc.socialInsurance.healthInsurance).toHaveLength(0);
+    expect(ecc.socialInsurance.total).toHaveLength(0);
+    expect(ecc.costOfGettingIncome).toHaveLength(0);
+    expect(ecc.employeeCapitalPlans).toHaveLength(0);
+    expect(ecc.employerCapitalPlans).toHaveLength(0);
+    expect(ecc.reliefForMiddleClass).toHaveLength(0);
+    expect(ecc.income).toHaveLength(0);
+    expect(ecc.incomeAcc).toHaveLength(0);
+  });
 });
 
-test("If 'SalaryInMonths' input is specified, set default values.", () => {
-  const ecc = new EmploymentContractCalculator(eccData.sets[0].salaryData);
-
-  expect(ecc.salaryInMonths).toHaveLength(0);
-  expect(ecc.accSalaryinMonths).toHaveLength(0);
-  expect(ecc.socialInsurance.retirementInsurance).toHaveLength(0);
-  expect(ecc.socialInsurance.disabilityInsurance).toHaveLength(0);
-  expect(ecc.socialInsurance.sicknessInsurance).toHaveLength(0);
-  expect(ecc.socialInsurance.healthInsurance).toHaveLength(0);
-  expect(ecc.socialInsurance.total).toHaveLength(0);
-  expect(ecc.costOfGettingIncome).toHaveLength(0);
-  expect(ecc.employeeCapitalPlans).toHaveLength(0);
-  expect(ecc.employerCapitalPlans).toHaveLength(0);
-  expect(ecc.reliefForMiddleClass).toHaveLength(0);
-  expect(ecc.income).toHaveLength(0);
-  expect(ecc.incomeAcc).toHaveLength(0);
-});
-
-test("If 'salaryData' input is undefined or null, then 0 values.", () => {
+describe("setSalary()", () => {
   const ecc = new EmploymentContractCalculator();
-  ecc.setSalary(null);
-  expect(ecc.salaryInMonths).toEqual(expect.arrayContaining(eccData.zeroValues));
-  expect(ecc.costOfGettingIncome).toEqual(expect.arrayContaining(eccData.zeroValues));
 
-  const ecc1 = new EmploymentContractCalculator();
-  ecc1.setSalary(null);
-  expect(ecc1.salaryInMonths).toEqual(expect.arrayContaining(eccData.zeroValues));
-  expect(ecc1.costOfGettingIncome).toEqual(expect.arrayContaining(eccData.zeroValues));
+  test("Given null as function argument Then I expect zero values for SalaryInMonth", () => {
+    ecc.setSalary(null);
+    expect(ecc.salaryInMonths).toEqual(expect.arrayContaining(eccData.zeroValues));
+    expect(ecc.costOfGettingIncome).toEqual(expect.arrayContaining(eccData.zeroValues));
+    expect(ecc.employeeCapitalPlans).toEqual(expect.arrayContaining(eccData.zeroValues));
+    expect(ecc.employerCapitalPlans).toEqual(expect.arrayContaining(eccData.zeroValues));
+  });
 
-  const ecc2 = new EmploymentContractCalculator();
-  ecc2.setSalary({ salary: null });
-  expect(ecc2.salaryInMonths).toEqual(expect.arrayContaining(eccData.zeroValues));
-  expect(ecc2.costOfGettingIncome).toEqual(expect.arrayContaining(eccData.zeroValues));
+  test("Given undefined as function input Then I expect zero values for SalaryInMonth", () => {
+    ecc.setSalary(undefined);
+    expect(ecc.salaryInMonths).toEqual(expect.arrayContaining(eccData.zeroValues));
+    expect(ecc.costOfGettingIncome).toEqual(expect.arrayContaining(eccData.zeroValues));
+    expect(ecc.employeeCapitalPlans).toEqual(expect.arrayContaining(eccData.zeroValues));
+    expect(ecc.employerCapitalPlans).toEqual(expect.arrayContaining(eccData.zeroValues));
+  });
 
-  const ecc3 = new EmploymentContractCalculator();
-  ecc3.setSalary({ salary: null });
-  expect(ecc3.salaryInMonths).toEqual(expect.arrayContaining(eccData.zeroValues));
-  expect(ecc3.costOfGettingIncome).toEqual(expect.arrayContaining(eccData.zeroValues));
+  test("Given null salary input Then I expect zero values for SalaryInMonth", () => {
+    ecc.setSalary({ salary: null });
+    expect(ecc.salaryInMonths).toEqual(expect.arrayContaining(eccData.zeroValues));
+  });
 
-  const ecc4 = new EmploymentContractCalculator();
-  ecc4.setSalary({ salary: undefined });
-  expect(ecc4.salaryInMonths).toEqual(expect.arrayContaining(eccData.zeroValues));
-  expect(ecc4.costOfGettingIncome).toEqual(expect.arrayContaining(eccData.zeroValues));
+  test("Given undefined salary input Then I expect zero values for SalaryInMonth", () => {
+    ecc.setSalary({ salary: undefined });
+    expect(ecc.salaryInMonths).toEqual(expect.arrayContaining(eccData.zeroValues));
+  });
 
-  const ecc5 = new EmploymentContractCalculator();
-  ecc5.setSalary({ salary: 100, costOfGettingIncome: null });
-  expect(ecc5.salaryInMonths).toContain(100);
-  expect(ecc5.costOfGettingIncome).toEqual(expect.arrayContaining(eccData.zeroValues));
+  test("Given 12000 salary input Then I expect 12000 values for SalaryInMonth", () => {
+    ecc.setSalary({ salary: 12000 });
+    expect(ecc.salaryInMonths).toContain(12000);
+  });
 
-  const ecc6 = new EmploymentContractCalculator();
-  ecc6.setSalary({ salary: 100, costOfGettingIncome: undefined });
-  expect(ecc6.salaryInMonths).toContain(100);
-  expect(ecc6.costOfGettingIncome).toEqual(expect.arrayContaining(eccData.zeroValues));
+  test("Given null cost of getting income input Then I expect zero values for costOfGettingIncome", () => {
+    ecc.setSalary({ costOfGettingIncome: null });
+    expect(ecc.costOfGettingIncome).toEqual(expect.arrayContaining(eccData.zeroValues));
+  });
 
-  const ecc7 = new EmploymentContractCalculator();
-  ecc7.setSalary({ salary: 100, costOfGettingIncome: 299 });
-  expect(ecc7.salaryInMonths).toContain(100);
-  expect(ecc7.costOfGettingIncome).toContain(299);
+  test("Given undefined cost of getting income input Then I expect zero values for costOfGettingIncome", () => {
+    ecc.setSalary({ costOfGettingIncome: undefined });
+    expect(ecc.costOfGettingIncome).toEqual(expect.arrayContaining(eccData.zeroValues));
+  });
 
-  const ecc8 = new EmploymentContractCalculator();
-  ecc8.setSalary({ salary: 100, costOfGettingIncome: 299, employeeCapitalPlans: null, employerCapitalPlans: null });
-  expect(ecc8.salaryInMonths).toContain(100);
-  expect(ecc8.costOfGettingIncome).toContain(299);
-  expect(ecc8.employeeCapitalPlans).toEqual(expect.arrayContaining(eccData.zeroValues));
-  expect(ecc8.employerCapitalPlans).toEqual(expect.arrayContaining(eccData.zeroValues));
+  test("Given 250 cost of getting income input Then I expect 250 values for costOfGettingIncome", () => {
+    ecc.setSalary({ costOfGettingIncome: 250 });
+    expect(ecc.costOfGettingIncome).toContain(250);
+  });
 
-  const ecc9 = new EmploymentContractCalculator();
-  ecc9.setSalary({ salary: 100, costOfGettingIncome: 299, employeeCapitalPlans: undefined, employerCapitalPlans: undefined });
-  expect(ecc8.salaryInMonths).toContain(100);
-  expect(ecc8.costOfGettingIncome).toContain(299);
-  expect(ecc8.employeeCapitalPlans).toEqual(expect.arrayContaining(eccData.zeroValues));
-  expect(ecc8.employerCapitalPlans).toEqual(expect.arrayContaining(eccData.zeroValues));
+  test("Given null employee capital plans input Then I expect zero values for employeeCapitalPlans", () => {
+    ecc.setSalary({ employeeCapitalPlans: null });
+    expect(ecc.employeeCapitalPlans).toEqual(expect.arrayContaining(eccData.zeroValues));
+  });
 
-  const ecc10 = new EmploymentContractCalculator();
-  ecc10.setSalary({ salary: 100, costOfGettingIncome: 299, employeeCapitalPlans: 1.5, employerCapitalPlans: 2 });
-  expect(ecc10.salaryInMonths).toContain(100);
-  expect(ecc10.costOfGettingIncome).toContain(299);
-  expect(ecc10.employeeCapitalPlans).toContain(1.5);
-  expect(ecc10.employerCapitalPlans).toContain(2);
+  test("Given undefined employee capital plans income input Then I expect zero values for employeeCapitalPlans", () => {
+    ecc.setSalary({ employeeCapitalPlans: undefined });
+    expect(ecc.employeeCapitalPlans).toEqual(expect.arrayContaining(eccData.zeroValues));
+  });
+
+  test("Given 1% employee capital plans input Then I expect 10 values for employeeCapitalPlans", () => {
+    ecc.setSalary({ employeeCapitalPlans: 1, salary: 1000 });
+    expect(ecc.employeeCapitalPlans).toContain(10);
+  });
+
+  test("Given null employee capital plans input Then I expect zero values for employerCapitalPlans", () => {
+    ecc.setSalary({ employerCapitalPlans: null });
+    expect(ecc.employerCapitalPlans).toEqual(expect.arrayContaining(eccData.zeroValues));
+  });
+
+  test("Given undefined employee capital plans income input Then I expect zero values for employerCapitalPlans", () => {
+    ecc.setSalary({ employerCapitalPlans: undefined });
+    expect(ecc.employerCapitalPlans).toEqual(expect.arrayContaining(eccData.zeroValues));
+  });
+
+  test("Given 2% employee capital plans input Then I expect 20 values for employerCapitalPlans", () => {
+    ecc.setSalary({ employerCapitalPlans: 2, salary: 1000 });
+    expect(ecc.employerCapitalPlans).toContain(20);
+  });
 });
 
 describe("calculateRelief()", () => {
@@ -150,33 +169,46 @@ describe("calculateRelief()", () => {
   test("Given salary of 20000 then I expect relief of 0.", () => expect(ecc.calculateRelief(20000)).toBe(0));
 });
 
-test.each(eccData.sets)("If setSalary is define then calculate for each month values.", (eccInput) => {
-  const ecc = new EmploymentContractCalculator();
-  ecc.setSalary(eccInput.salaryData);
-  expect(ecc.salaryInMonths).toHaveLength(12);
-  expect(ecc.accSalaryinMonths).toHaveLength(0);
-  expect(ecc.socialInsurance.retirementInsurance).toHaveLength(0);
-  expect(ecc.socialInsurance.disabilityInsurance).toHaveLength(0);
-  expect(ecc.socialInsurance.sicknessInsurance).toHaveLength(0);
-  expect(ecc.socialInsurance.healthInsurance).toHaveLength(0);
-  expect(ecc.socialInsurance.total).toHaveLength(0);
-  expect(ecc.costOfGettingIncome).toHaveLength(12);
-  expect(ecc.employeeCapitalPlans).toHaveLength(12);
-  expect(ecc.employerCapitalPlans).toHaveLength(12);
-  expect(ecc.income).toHaveLength(0);
-  expect(ecc.incomeAcc).toHaveLength(0);
+describe("setSalary()", () => {
+  eccData.sets.forEach((eccInput) => {
+    const ecc = new EmploymentContractCalculator();
+    test(
+      "Given salary input (salary, cost of getting income and capital plans) " +
+        "Then I expect arrays of salaryInMonths, costOfGettingIncome, employeeCapitalPlans, employerCapitalPlans to be initialized for each month " +
+        "And other collection to be empty.",
+      () => {
+        ecc.setSalary(eccInput.salaryData);
+        expect(ecc.salaryInMonths).toHaveLength(12);
+        expect(ecc.accSalaryinMonths).toHaveLength(0);
+        expect(ecc.socialInsurance.retirementInsurance).toHaveLength(0);
+        expect(ecc.socialInsurance.disabilityInsurance).toHaveLength(0);
+        expect(ecc.socialInsurance.sicknessInsurance).toHaveLength(0);
+        expect(ecc.socialInsurance.healthInsurance).toHaveLength(0);
+        expect(ecc.socialInsurance.total).toHaveLength(0);
+        expect(ecc.costOfGettingIncome).toHaveLength(12);
+        expect(ecc.employeeCapitalPlans).toHaveLength(12);
+        expect(ecc.employerCapitalPlans).toHaveLength(12);
+        expect(ecc.income).toHaveLength(0);
+        expect(ecc.incomeAcc).toHaveLength(0);
+      }
+    );
 
-  ecc.calculate();
-  expect(ecc.salaryInMonths).toEqual(expect.arrayContaining(eccInput.salaryinMonths));
-  expect(ecc.accSalaryinMonths).toEqual(expect.arrayContaining(eccInput.accSalaryinMonths));
-  expect(ecc.socialInsurance.retirementInsurance).toEqual(expect.arrayContaining(eccInput.retirementInsurance));
-  expect(ecc.socialInsurance.disabilityInsurance).toEqual(expect.arrayContaining(eccInput.disabilityInsurance));
-  expect(ecc.socialInsurance.sicknessInsurance).toEqual(expect.arrayContaining(eccInput.sicknessInsurance));
-  expect(ecc.socialInsurance.healthInsurance).toEqual(expect.arrayContaining(eccInput.healthInsurance));
-  expect(ecc.socialInsurance.total).toEqual(expect.arrayContaining(eccInput.total));
-  expect(ecc.costOfGettingIncome).toEqual(expect.arrayContaining(eccInput.costOfGettingIncome));
-  expect(ecc.employeeCapitalPlans).toEqual(expect.arrayContaining(eccInput.employeeCapitalPlans));
-  expect(ecc.employerCapitalPlans).toEqual(expect.arrayContaining(eccInput.employerCapitalPlans));
-  expect(ecc.income).toEqual(expect.arrayContaining(eccInput.income));
-  expect(ecc.incomeAcc).toEqual(expect.arrayContaining(eccInput.incomeAcc));
+    describe("calculate()", () => {
+      test("Given Calculator with salary's input data Then I expect result to be exact to precalculated values.", () => {
+        ecc.calculate();
+        expect(ecc.salaryInMonths).toEqual(expect.arrayContaining(eccInput.salaryinMonths));
+        expect(ecc.accSalaryinMonths).toEqual(expect.arrayContaining(eccInput.accSalaryinMonths));
+        expect(ecc.socialInsurance.retirementInsurance).toEqual(expect.arrayContaining(eccInput.retirementInsurance));
+        expect(ecc.socialInsurance.disabilityInsurance).toEqual(expect.arrayContaining(eccInput.disabilityInsurance));
+        expect(ecc.socialInsurance.sicknessInsurance).toEqual(expect.arrayContaining(eccInput.sicknessInsurance));
+        expect(ecc.socialInsurance.healthInsurance).toEqual(expect.arrayContaining(eccInput.healthInsurance));
+        expect(ecc.socialInsurance.total).toEqual(expect.arrayContaining(eccInput.total));
+        expect(ecc.costOfGettingIncome).toEqual(expect.arrayContaining(eccInput.costOfGettingIncome));
+        expect(ecc.employeeCapitalPlans).toEqual(expect.arrayContaining(eccInput.employeeCapitalPlans));
+        expect(ecc.employerCapitalPlans).toEqual(expect.arrayContaining(eccInput.employerCapitalPlans));
+        expect(ecc.income).toEqual(expect.arrayContaining(eccInput.income));
+        expect(ecc.incomeAcc).toEqual(expect.arrayContaining(eccInput.incomeAcc));
+      });
+    });
+  });
 });
