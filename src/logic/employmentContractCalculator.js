@@ -21,6 +21,8 @@ class EmploymentContractCalculator {
     this.employeeCapitalPlans = [];
     this.employerCapitalPlans = [];
     this.reliefForMiddleClass = [];
+    this.firstIncomeTaxThreshold = [];
+    this.secondIncomeTaxThreshold = [];
     this.income = [];
     this.incomeAcc = [];
   }
@@ -81,17 +83,20 @@ class EmploymentContractCalculator {
   calculateIncome() {
     var incomeAcc = 0;
     var income = 0;
+    var relief = 0;
 
     _.each(this.salaryInMonths, (salary, i) => {
+      relief = this.calculateRelief(salary);
       income =
         salary -
         this.socialInsurance.retirementInsurance[i] -
         this.socialInsurance.disabilityInsurance[i] -
         this.socialInsurance.sicknessInsurance[i] -
-        this.costOfGettingIncome[i];
+        this.costOfGettingIncome[i] - 
+        relief;
 
       incomeAcc += income;
-      this.reliefForMiddleClass[i] = this.calculateRelief(salary);
+      this.reliefForMiddleClass[i] = relief;
       this.income[i] = income;
       this.incomeAcc[i] = incomeAcc;
     });

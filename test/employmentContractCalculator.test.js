@@ -16,8 +16,25 @@ var eccData = {
       costOfGettingIncome: [300, 300, 300, 300, 300, 300, 300, 300, 300, 300, 300, 300],
       employeeCapitalPlans: [75, 75, 75, 75, 75, 75, 75, 75, 75, 75, 75, 75],
       employerCapitalPlans: [100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100],
+      reliefForMiddleClass: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
       income: [4014, 4014, 4014, 4014, 4014, 4014, 4014, 4014, 4014, 4014, 4014, 4014],
       incomeAcc: [4014, 8028, 12042, 16056, 20070, 24084, 28098, 32112, 36126, 40140, 44154, 48168],
+    },
+    {
+      salaryData: { salary: 10000, costOfGettingIncome: 300, employeeCapitalPlans: 1.5, employerCapitalPlans: 2 },
+      salaryinMonths: [10000, 10000, 10000, 10000, 10000, 10000, 10000, 10000, 10000, 10000, 10000, 10000],
+      accSalaryinMonths: [10000, 20000, 30000, 40000, 50000, 60000, 70000, 80000, 90000, 100000, 110000, 120000],
+      retirementInsurance: [976, 976, 976, 976, 976, 976, 976, 976, 976, 976, 976, 976],
+      disabilityInsurance: [150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150],
+      sicknessInsurance: [245, 245, 245, 245, 245, 245, 245, 245, 245, 245, 245, 245],
+      healthInsurance: [777, 777, 777, 777, 777, 777, 777, 777, 777, 777, 777, 777],
+      total: [2148, 2148, 2148, 2148, 2148, 2148, 2148, 2148, 2148, 2148, 2148, 2148],
+      costOfGettingIncome: [300, 300, 300, 300, 300, 300, 300, 300, 300, 300, 300, 300],
+      employeeCapitalPlans: [150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150],
+      employerCapitalPlans: [200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200],
+      reliefForMiddleClass: [495, 495, 495, 495, 495, 495, 495, 495, 495, 495, 495, 495],
+      income: [7834, 7834, 7834, 7834, 7834, 7834, 7834, 7834, 7834, 7834, 7834, 7834],
+      incomeAcc: [7834, 15668, 23502, 31336, 39170, 47004, 54838, 62672, 70506, 78340, 86174, 94008],
     },
     {
       salaryData: { salary: 20000, costOfGettingIncome: 250, employeeCapitalPlans: 0.5, employerCapitalPlans: 1 },
@@ -31,6 +48,7 @@ var eccData = {
       costOfGettingIncome: [250, 250, 250, 250, 250, 250, 250, 250, 250, 250, 250, 250],
       employeeCapitalPlans: [100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100],
       employerCapitalPlans: [200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200],
+      reliefForMiddleClass: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
       income: [17008, 17008, 17008, 17008, 17008, 17008, 17008, 17008, 17271, 19260, 19260, 19260],
       incomeAcc: [17008, 34016, 51024, 68032, 85040, 102048, 119056, 136064, 153335, 172595, 191855, 211115],
     },
@@ -56,7 +74,7 @@ describe("ctor()", () => {
     expect(ecc.income).toHaveLength(0);
     expect(ecc.incomeAcc).toHaveLength(0);
   });
-  
+
   test("Given correct input for calculator initialization Then calculator should initialize empty collections.", () => {
     const ecc = new EmploymentContractCalculator(eccData.sets[0].salaryData);
 
@@ -188,6 +206,7 @@ describe("setSalary()", () => {
         expect(ecc.costOfGettingIncome).toHaveLength(12);
         expect(ecc.employeeCapitalPlans).toHaveLength(12);
         expect(ecc.employerCapitalPlans).toHaveLength(12);
+        expect(ecc.reliefForMiddleClass).toHaveLength(0);
         expect(ecc.income).toHaveLength(0);
         expect(ecc.incomeAcc).toHaveLength(0);
       }
@@ -195,6 +214,7 @@ describe("setSalary()", () => {
 
     describe("calculate()", () => {
       test("Given Calculator with salary's input data Then I expect result to be exact to precalculated values.", () => {
+        console.log("For salary: " + eccInput.salaryData.salary);
         ecc.calculate();
         expect(ecc.salaryInMonths).toEqual(expect.arrayContaining(eccInput.salaryinMonths));
         expect(ecc.accSalaryinMonths).toEqual(expect.arrayContaining(eccInput.accSalaryinMonths));
@@ -206,6 +226,7 @@ describe("setSalary()", () => {
         expect(ecc.costOfGettingIncome).toEqual(expect.arrayContaining(eccInput.costOfGettingIncome));
         expect(ecc.employeeCapitalPlans).toEqual(expect.arrayContaining(eccInput.employeeCapitalPlans));
         expect(ecc.employerCapitalPlans).toEqual(expect.arrayContaining(eccInput.employerCapitalPlans));
+        expect(ecc.reliefForMiddleClass).toEqual(expect.arrayContaining(eccInput.reliefForMiddleClass));
         expect(ecc.income).toEqual(expect.arrayContaining(eccInput.income));
         expect(ecc.incomeAcc).toEqual(expect.arrayContaining(eccInput.incomeAcc));
       });

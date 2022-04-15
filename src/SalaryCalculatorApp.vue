@@ -30,6 +30,14 @@
             Pracownik mieszkający – stale bądź tymczasowo – poza miejscowością, w której wykonuje pracę zarobkową 300 zł miesięcznie.
           </p>
         </div>
+      </div>      
+      <div class="form-group row mb-3">
+        <label for="taxFreeAmountCheckbox" class="col-md-4 col-6 col-form-label-lg">Kwota wolna od podatku (425 zł miesięcznie)?</label>
+        <div class="col-md-1 col-4 d-flex justify-content-left align-items-center">
+          <div class="form-check">
+            <input id="taxFreeAmountCheckbox" v-model="isTaxFreeAmount" class="form-check-input position-static" type="checkbox" value="" />
+          </div>
+        </div>
       </div>
       <div class="form-group row mb-3">
         <label for="26yearsoldCheckbox" class="col-md-4 col-6 col-form-label-lg">Czy ukończony 26 rok życia?</label>
@@ -45,7 +53,7 @@
           <div class="form-check">
             <input id="employeeCapitalPlansCheckbox" v-model="isEmployeeCapitalPlans" class="form-check-input position-static" type="checkbox" value="" />
           </div>
-        </div>
+        </div>       
 
         <div v-show="isEmployeeCapitalPlans">
           <div class="form-group row mb-3 d-flex">
@@ -121,6 +129,7 @@
         costOfGettingIncome: 250,
         is26YearsOld: false,
         isEmployeeCapitalPlans: false,
+        isTaxFreeAmount: true,
         employeeCapitalPlansLevel: 2,
         employerCapitalPlansLevel: 1.5,
         formatter: new Intl.NumberFormat("pl-PL", {
@@ -163,7 +172,8 @@
           salary: this.grossSalary,
           costOfGettingIncome: this.costOfGettingIncome,
           employeeCapitalPlans: this.isEmployeeCapitalPlans ? this.employeeCapitalPlansLevel : 0,
-          employerCapitalPlans: this.isEmployeeCapitalPlans ? this.employerCapitalPlansLevel : 0
+          employerCapitalPlans: this.isEmployeeCapitalPlans ? this.employerCapitalPlansLevel : 0,
+          isTaxFreeAmountEnabled: this.isTaxFreeAmount
         };
 
         return salaryData;
