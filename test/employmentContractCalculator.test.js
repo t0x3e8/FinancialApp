@@ -1,4 +1,4 @@
-/* global test, expect */
+/* global test, expect, describe */
 
 import EmploymentContractCalculator from "../src/logic/employmentContractCalculator.js";
 
@@ -26,8 +26,8 @@ var eccData = {
       retirementInsurance: [1952, 1952, 1952, 1952, 1952, 1952, 1952, 1952, 1724, 0, 0, 0],
       disabilityInsurance: [300, 300, 300, 300, 300, 300, 300, 300, 265, 0, 0, 0],
       sicknessInsurance: [490, 490, 490, 490, 490, 490, 490, 490, 490, 490, 490, 490],
-      healthInsurance: [1553, 1553, 1553, 1553, 1553, 1553, 1553, 1553, 1553, 1576, 1755, 1755, 1755],
-      total: [4295, 4295, 4295, 4295, 4295, 4295, 4295, 4295, 4055, 2245, 2245, 2245],
+      healthInsurance:[1553, 1553, 1553, 1553, 1553, 1553, 1553, 1553, 1577, 1756, 1756, 1756],
+      total: [4295, 4295, 4295, 4295, 4295, 4295, 4295, 4295, 4056, 2246, 2246, 2246],
       costOfGettingIncome: [250, 250, 250, 250, 250, 250, 250, 250, 250, 250, 250, 250],
       employeeCapitalPlans: [100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100],
       employerCapitalPlans: [200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200],
@@ -51,6 +51,7 @@ test("If no input is specified, set the default values.", () => {
   expect(ecc.socialInsurance.total).toHaveLength(0);
   expect(ecc.costOfGettingIncome).toHaveLength(0);
   expect(ecc.employeeCapitalPlans).toHaveLength(0);
+  expect(ecc.reliefForMiddleClass).toHaveLength(0);
   expect(ecc.income).toHaveLength(0);
   expect(ecc.incomeAcc).toHaveLength(0);
 });
@@ -68,6 +69,7 @@ test("If 'SalaryInMonths' input is specified, set default values.", () => {
   expect(ecc.costOfGettingIncome).toHaveLength(0);
   expect(ecc.employeeCapitalPlans).toHaveLength(0);
   expect(ecc.employerCapitalPlans).toHaveLength(0);
+  expect(ecc.reliefForMiddleClass).toHaveLength(0);
   expect(ecc.income).toHaveLength(0);
   expect(ecc.incomeAcc).toHaveLength(0);
 });
@@ -133,6 +135,19 @@ test("If 'salaryData' input is undefined or null, then 0 values.", () => {
   expect(ecc10.costOfGettingIncome).toContain(299);
   expect(ecc10.employeeCapitalPlans).toContain(1.5);
   expect(ecc10.employerCapitalPlans).toContain(2);
+});
+
+describe("calculateRelief()", () => {
+  const ecc = new EmploymentContractCalculator();
+  test("Given salary of 3400 then I expect relief of 0.", () => expect(ecc.calculateRelief(3400)).toBe(0));
+  test("Given salary of 5700 then I expect relief of 0.", () => expect(ecc.calculateRelief(5700)).toBe(0));
+  test("Given salary of 7568  then I expect relief of 0.", () => expect(ecc.calculateRelief(7568)).toBe(736));
+  test("Given salary of 8548 then I expect relief of 0.", () => expect(ecc.calculateRelief(8548)).toBe(1121));
+  test("Given salary of 8549 then I expect relief of 0.", () => expect(ecc.calculateRelief(8549)).toBe(1122));
+  test("Given salary of 10000 then I expect relief of 0.", () => expect(ecc.calculateRelief(10000)).toBe(495));
+  test("Given salary of 11140 then I expect relief of 0.", () => expect(ecc.calculateRelief(11140)).toBe(2));
+  test("Given salary of 11141 then I expect relief of 0.", () => expect(ecc.calculateRelief(11141)).toBe(0));
+  test("Given salary of 20000 then I expect relief of 0.", () => expect(ecc.calculateRelief(20000)).toBe(0));
 });
 
 test.each(eccData.sets)("If setSalary is define then calculate for each month values.", (eccInput) => {

@@ -85,6 +85,7 @@
             <th scope="col">Zdrowotna</th>
             <th scope="col">KUP</th>
             <th v-show="isEmployeeCapitalPlans" scope="col">PPK</th>
+            <th scope="col">Ulga dla klasy średniej</th>
             <th scope="col">Dochód</th>
           </tr>
         </thead>
@@ -98,6 +99,7 @@
             <td>{{ item.health }}</td>
             <td>{{ item.costOfGettingIncome }}</td>
             <td v-show="isEmployeeCapitalPlans">{{ item.employeeCapitalPlans }}</td>
+            <td>{{ item.reliefForMiddleClass }}</td>
             <td>{{ item.income }}</td>
           </tr>
         </tbody>
@@ -130,6 +132,7 @@
     },
     computed: {
       monthSalaryData() {
+        // TODO: Add Total row
         const data = [];
         const monthNames = ["Styczeń", "Luty", "Marzec", "Kwiecień", "Maj", "Czewiec", "Lipiec", "Sierpień", "Wrzesień", "Październik", "Listopad", "Grudzień"];
 
@@ -143,6 +146,7 @@
             health: this.formatter.format(this.calculator.socialInsurance.healthInsurance[i]),
             costOfGettingIncome: this.formatter.format(this.calculator.costOfGettingIncome[i]),
             employeeCapitalPlans: this.formatter.format(this.calculator.employeeCapitalPlans[i]),
+            reliefForMiddleClass : this.formatter.format(this.calculator.reliefForMiddleClass[i]),
             income: this.formatter.format(this.calculator.income[i]),
           };
         }

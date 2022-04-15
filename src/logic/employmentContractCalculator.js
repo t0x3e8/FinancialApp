@@ -20,6 +20,7 @@ class EmploymentContractCalculator {
     };
     this.employeeCapitalPlans = [];
     this.employerCapitalPlans = [];
+    this.reliefForMiddleClass = [];
     this.income = [];
     this.incomeAcc = [];
   }
@@ -64,6 +65,18 @@ class EmploymentContractCalculator {
       this.accSalaryinMonths[index] = salaryAcc;
     });
   }
+  
+  calculateRelief(salary) {
+    if (salary >= 5701 && salary < 8549) {
+      return Math.round(((salary * 0.0668) - 380.5) / 0.17);
+    }
+    else if (salary >= 8549 && salary < 11141) {
+      return Math.round(((salary * - 0.0735) + 819.08) / 0.17);
+    }
+    else { 
+      return 0;
+    }
+  }
 
   calculateIncome() {
     var incomeAcc = 0;
@@ -78,7 +91,7 @@ class EmploymentContractCalculator {
         this.costOfGettingIncome[i];
 
       incomeAcc += income;
-
+      this.reliefForMiddleClass[i] = this.calculateRelief(salary);
       this.income[i] = income;
       this.incomeAcc[i] = incomeAcc;
     });
@@ -101,7 +114,7 @@ class EmploymentContractCalculator {
       }
 
       this.socialInsurance.sicknessInsurance[index] = Math.round(salary * 0.0245);
-      this.socialInsurance.healthInsurance[index] = Math.floor(
+      this.socialInsurance.healthInsurance[index] = Math.round(
         (salary - this.socialInsurance.retirementInsurance[index] - this.socialInsurance.disabilityInsurance[index] - this.socialInsurance.sicknessInsurance[index]) * 0.09
       );
 
