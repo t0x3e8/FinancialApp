@@ -1,6 +1,7 @@
 /* global test, expect, describe */
 
 import EmploymentContractCalculator from "../src/logic/employmentContractCalculator.js";
+import _ from "underscore";
 
 var eccData = {
   sets: [
@@ -214,7 +215,6 @@ describe("setSalary()", () => {
 
     describe("calculate()", () => {
       test("Given Calculator with salary's input data Then I expect result to be exact to precalculated values.", () => {
-        console.log("For salary: " + eccInput.salaryData.salary);
         ecc.calculate();
         expect(ecc.salaryInMonths).toEqual(expect.arrayContaining(eccInput.salaryinMonths));
         expect(ecc.accSalaryinMonths).toEqual(expect.arrayContaining(eccInput.accSalaryinMonths));
@@ -231,5 +231,19 @@ describe("setSalary()", () => {
         expect(ecc.incomeAcc).toEqual(expect.arrayContaining(eccInput.incomeAcc));
       });
     });
+  });
+});
+
+describe("calculateTax()", () => {
+  const ecc = new EmploymentContractCalculator();
+  const sum = (array) => _.reduce(array, (a, b) => a + b);
+
+  test("Given month's income 3500 and Then I expect tax of 0", () => {
+    ecc.setSalary({ salary: 3500, costOfGettingIncome: 250, isTaxFreeAmountEnabled: false, isAbove26YearsOld: false });
+    ecc.calculate();
+
+    expect(sum(ecc.firstIncomeTaxThreshold)).toBe(33228);
+    expect(sum(ecc.secondIncomeTaxThreshold)).toBe(0);
+    expect()
   });
 });

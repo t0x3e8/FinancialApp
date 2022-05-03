@@ -1,6 +1,8 @@
 import _ from "underscore";
 
 const SocialInsuranceAnnualLimit = 177660;
+const OldTaxThreshold = 85528;
+const NewTaxThreshold = 120000;
 
 class EmploymentContractCalculator {
   constructor(contractData) {
@@ -8,6 +10,8 @@ class EmploymentContractCalculator {
       contractData = {};
     }
 
+    this.isTaxFreeAmountEnabled = false;
+    this.isAbove26YearsOld = false;
     this.salaryInMonths = [];
     this.accSalaryinMonths = [];
     this.costOfGettingIncome = [];
@@ -21,10 +25,12 @@ class EmploymentContractCalculator {
     this.employeeCapitalPlans = [];
     this.employerCapitalPlans = [];
     this.reliefForMiddleClass = [];
-    this.firstIncomeTaxThreshold = [];
-    this.secondIncomeTaxThreshold = [];
+    this.reliefTaxFree = [];
     this.income = [];
     this.incomeAcc = [];
+    this.firstIncomeTaxThreshold = [];
+    this.secondIncomeTaxThreshold = [];
+    this.taxPrepayment = [];
   }
 
   setSalary(data) {
@@ -49,13 +55,25 @@ class EmploymentContractCalculator {
       if (!_.isNull(data.employerCapitalPlans) && !_.isUndefined(data.employerCapitalPlans)) {
         employerCapitalPlans = data.employerCapitalPlans;
       }
+
+      if (!_.isNull(data.isTaxFreeAmountEnabled) && !_.isUndefined(data.isTaxFreeAmountEnabled)) {
+        this.isTaxFreeAmountEnabled = data.isTaxFreeAmountEnabled;
+      } else {
+        this.isTaxFreeAmountEnabled = false;
+      }
+
+      if (!_.isNull(data.isAbove26YearsOld) && !_.isUndefined(data.isAbove26YearsOld)) {
+        this.isAbove26YearsOld = data.isAbove26YearsOld;
+      } else {
+        this.isAbove26YearsOld = false;
+      }
     }
 
     for (var i = 0; i < 12; i++) {
       this.salaryInMonths[i] = salary;
       this.costOfGettingIncome[i] = costOfGettingIncome;
-      this.employeeCapitalPlans[i] = (salary * employeeCapitalPlans) / 100;
-      this.employerCapitalPlans[i] = (salary * employerCapitalPlans) / 100;
+      this.employeeCapitalPlans[i] = Math.round((salary * employeeCapitalPlans) / 100);
+      this.employerCapitalPlans[i] = Math.round((salary * employerCapitalPlans) / 100);
     }
   }
 
@@ -67,15 +85,57 @@ class EmploymentContractCalculator {
       this.accSalaryinMonths[index] = salaryAcc;
     });
   }
-  
+
+  // IF(is26YearsOld && SalaryAcc<=85528+Salary)
+  //   0;
+  // else
+  //   IF(incomeAcc<120000)
+  //     Income;
+  //   else
+  //     IF(incomeAcc >= 120000 && (incomeAcc-120000)<=Income
+  //       Income +120000-incomeAcc;
+  //     else
+  //       0
+
+  // IF(incomeAcc>=120000;
+  //   IF(incomeAcc>=120000 && incomeAcc-120000>=income);
+  //     income;
+  //   else
+  //     incomeAcc-120000;
+  // else
+  //   0
+
+  calculateTax() {
+    for (let i = 0; i < 12; i++) {
+      this.firstIncomeTaxThreshold[i] = 0;
+      this.secondIncomeTaxThreshold[i] = 0;
+
+      if (this.incomeAcc[i] < NewTaxThreshold) {
+        this.firstIncomeTaxThreshold[i] = this.income[i];
+      } else if (this.incomeAcc[i] >= NewTaxThreshold && this.incomeAcc[i] - NewTaxThreshold <= this.income[i]) {
+        // month's income is split between 1st and 2nd tax threshold
+        this.firstIncomeTaxThreshold[i] = this.income[i] + NewTaxThreshold - this.incomeAcc[i];
+        this.secondIncomeTaxThreshold[i] = this.incomeAcc[i] - NewTaxThreshold;
+      } else {
+        this.secondIncomeTaxThreshold[i] = this.income[i];
+      }
+
+      var isTaxableIncomePositive = this.firstIncomeTaxThreshold[i] > 0 || this.secondIncomeTaxThreshold[i] > 0;
+      if (this.isAbove26YearsOld) this.reliefTaxFree[i] = 425;
+      else {
+        // When age is below 26 and income for taxation is above 0 then relief is 425
+        if (isTaxableIncomePositive) this.reliefTaxFree[i] = 425;
+        else this.reliefTaxFree[i] = 0;
+      }
+    }
+  }
+
   calculateRelief(salary) {
     if (salary >= 5701 && salary < 8549) {
-      return Math.round(((salary * 0.0668) - 380.5) / 0.17);
-    }
-    else if (salary >= 8549 && salary < 11141) {
-      return Math.round(((salary * - 0.0735) + 819.08) / 0.17);
-    }
-    else { 
+      return Math.round((salary * 0.0668 - 380.5) / 0.17);
+    } else if (salary >= 8549 && salary < 11141) {
+      return Math.round((salary * -0.0735 + 819.08) / 0.17);
+    } else {
       return 0;
     }
   }
@@ -92,7 +152,7 @@ class EmploymentContractCalculator {
         this.socialInsurance.retirementInsurance[i] -
         this.socialInsurance.disabilityInsurance[i] -
         this.socialInsurance.sicknessInsurance[i] -
-        this.costOfGettingIncome[i] - 
+        this.costOfGettingIncome[i] -
         relief;
 
       incomeAcc += income;
@@ -135,6 +195,7 @@ class EmploymentContractCalculator {
     this.calculateAccumulatedSalaries();
     this.calculateSocialInsurance();
     this.calculateIncome();
+    this.calculateTax();
   }
 }
 
