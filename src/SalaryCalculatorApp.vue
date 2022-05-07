@@ -97,6 +97,7 @@
             <th scope="col">Dochód</th>
             <th scope="col">Próg I</th>
             <th scope="col">Próg II</th>
+            <th scope="col">Wolna od podatku</th>
             <th scope="col">Zaliczka VAT</th>
           </tr>
         </thead>
@@ -115,6 +116,7 @@
             <td>{{ item.firstIncomeTaxThreshold }}</td>
             <td>{{ item.secondIncomeTaxThreshold }}</td>
             <td>{{ item.reliefTaxFree }}</td>
+            <td>{{ item.taxPrepayment }}</td>
           </tr>
         </tbody>
       </table>
@@ -166,6 +168,7 @@
             firstIncomeTaxThreshold: this.formatter.format(this.calculator.firstIncomeTaxThreshold[i]),
             secondIncomeTaxThreshold: this.formatter.format(this.calculator.secondIncomeTaxThreshold[i]),
             reliefTaxFree: this.formatter.format(this.calculator.reliefTaxFree[i]),
+            taxPrepayment: this.formatter.format(this.calculator.taxPrepayment[i]),
           };
         }
         return data;
