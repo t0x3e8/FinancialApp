@@ -21,7 +21,7 @@ class EmploymentContractCalculator {
 
   resetData() {
     this.isTaxFreeAmountEnabled = false;
-    this.isAbove26YearsOld = false;
+    this.isAbove26YearsOld = true;
     this.salaryInMonths = [];
     this.accSalaryinMonths = [];
     this.costOfGettingIncome = [];
@@ -41,6 +41,7 @@ class EmploymentContractCalculator {
     this.firstIncomeTaxThreshold = [];
     this.secondIncomeTaxThreshold = [];
     this.taxPrepayment = [];
+    this.salaryNet = [];
   }
 
   setSalary(data) {
@@ -211,11 +212,18 @@ class EmploymentContractCalculator {
     });
   }
 
+  calculateSalaryNet() {
+    for (let i = 0; i < 12; i++) {
+      this.salaryNet[i] = round(this.salaryInMonths[i] - this.socialInsurance.total[i] - this.employeeCapitalPlans[i] - this.taxPrepayment[i], 2)
+    }
+  }
+
   calculate() {
     this.calculateAccumulatedSalaries();
     this.calculateSocialInsurance();
     this.calculateIncome();
     this.calculateTax();
+    this.calculateSalaryNet();
   }
 }
 

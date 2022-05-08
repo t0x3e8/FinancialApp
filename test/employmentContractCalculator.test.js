@@ -23,6 +23,7 @@ var eccData = {
       firstIncomeTaxThreshold: [4014.5, 4014.5, 4014.5, 4014.5, 4014.5, 4014.5, 4014.5, 4014.5, 4014.5, 4014.5, 4014.5, 4014.5],
       secondIncomeTaxThreshold: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
       taxPrepayment: [257.47, 257.47, 257.47, 257.47, 257.47, 257.47, 257.47, 257.47, 257.47, 257.47, 257.47, 257.47],
+      salaryNet: [3593.72, 3593.72, 3593.72, 3593.72, 3593.72, 3593.72, 3593.72, 3593.72, 3593.72, 3593.72, 3593.72, 3593.72],
     },
     {
       salaryData: { salary: 10000, costOfGettingIncome: 300, employeeCapitalPlans: 1.5, employerCapitalPlans: 2 },
@@ -42,6 +43,7 @@ var eccData = {
       firstIncomeTaxThreshold: [7834.41, 7834.41, 7834.41, 7834.41, 7834.41, 7834.41, 7834.41, 7834.41, 7834.41, 7834.41, 7834.41, 7834.41],
       secondIncomeTaxThreshold: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
       taxPrepayment: [906.85, 906.85, 906.85, 906.85, 906.85, 906.85, 906.85, 906.85, 906.85, 906.85, 906.85, 906.85],
+      salaryNet: [6795.54, 6795.54, 6795.54, 6795.54, 6795.54, 6795.54, 6795.54, 6795.54, 6795.54, 6795.54, 6795.54, 6795.54],
     },
     {
       salaryData: { salary: 20000, costOfGettingIncome: 250, employeeCapitalPlans: 0.5, employerCapitalPlans: 1 },
@@ -61,6 +63,7 @@ var eccData = {
       firstIncomeTaxThreshold: [17008, 17008, 17008, 17008, 17008, 17008, 17008, 944, 0, 0, 0, 0],
       secondIncomeTaxThreshold: [0, 0, 0, 0, 0, 0, 0, 16064, 17271.48, 19260, 19260, 19260],
       taxPrepayment: [2466.36, 2466.36, 2466.36, 2466.36, 2466.36, 2466.36, 2466.36, 4875.96, 5101.87, 5738.2, 5738.2, 5738.2],
+      salaryNet: [13138.42, 13138.42, 13138.42, 13138.42, 13138.42, 13138.42, 13138.42, 10728.82, 10742.68, 11915.9, 11915.9, 11915.9],
     },
   ],
   taxSets: [
@@ -148,6 +151,7 @@ describe("ctor()", () => {
     expect(ecc.firstIncomeTaxThreshold).toHaveLength(0);
     expect(ecc.secondIncomeTaxThreshold).toHaveLength(0);
     expect(ecc.taxPrepayment).toHaveLength(0);
+    expect(ecc.salaryNet).toHaveLength(0);
   });
 
   test("Given correct input for calculator initialization Then calculator should initialize empty collections.", () => {
@@ -169,6 +173,7 @@ describe("ctor()", () => {
     expect(ecc.firstIncomeTaxThreshold).toHaveLength(0);
     expect(ecc.secondIncomeTaxThreshold).toHaveLength(0);
     expect(ecc.taxPrepayment).toHaveLength(0);
+    expect(ecc.salaryNet).toHaveLength(0);
   });
 });
 
@@ -290,6 +295,7 @@ describe("setSalary()", () => {
         expect(ecc.firstIncomeTaxThreshold).toHaveLength(0);
         expect(ecc.secondIncomeTaxThreshold).toHaveLength(0);
         expect(ecc.taxPrepayment).toHaveLength(0);
+        expect(ecc.salaryNet).toHaveLength(0);
       }
     );
 
@@ -312,6 +318,7 @@ describe("setSalary()", () => {
         expect(ecc.firstIncomeTaxThreshold).toEqual(expect.arrayContaining(eccInput.firstIncomeTaxThreshold));
         expect(ecc.secondIncomeTaxThreshold).toEqual(expect.arrayContaining(eccInput.secondIncomeTaxThreshold));
         expect(ecc.taxPrepayment).toEqual(expect.arrayContaining(eccInput.taxPrepayment));
+        expect(ecc.salaryNet).toEqual(expect.arrayContaining(eccInput.salaryNet));
       });
     });
   });

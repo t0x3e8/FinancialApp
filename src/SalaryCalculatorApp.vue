@@ -99,6 +99,7 @@
             <th scope="col">Próg II</th>
             <th scope="col">Wolna od podatku</th>
             <th scope="col">Zaliczka VAT</th>
+            <th scope="col">Netto</th>
           </tr>
         </thead>
         <tbody>
@@ -117,6 +118,7 @@
             <td>{{ item.secondIncomeTaxThreshold }}</td>
             <td>{{ item.reliefTaxFree }}</td>
             <td>{{ item.taxPrepayment }}</td>
+            <td>{{ item.salaryNet }}</td>
           </tr>
         </tbody>
       </table>
@@ -135,7 +137,7 @@
       return {
         grossSalary: 3400,
         costOfGettingIncome: 250,
-        isAbove26YearsOld: false,
+        isAbove26YearsOld: true,
         isEmployeeCapitalPlans: false,
         isTaxFreeAmount: true,
         employeeCapitalPlansLevel: 2,
@@ -169,6 +171,7 @@
             secondIncomeTaxThreshold: this.formatter.format(this.calculator.secondIncomeTaxThreshold[i]),
             reliefTaxFree: this.formatter.format(this.calculator.reliefTaxFree[i]),
             taxPrepayment: this.formatter.format(this.calculator.taxPrepayment[i]),
+            salaryNet: this.formatter.format(this.calculator.salaryNet[i]),
           };
         }
         return data;
