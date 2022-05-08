@@ -102,7 +102,7 @@ var eccData = {
     },
     {
       salaryData: { salary: 10000, costOfGettingIncome: 300 },
-      sumOfFirstIncomeTaxThreshold:  94013,
+      sumOfFirstIncomeTaxThreshold: 94013,
       sumOfSecondIncomeTaxThreshold: 0,
       sumOfTaxPrepayment: 10882,
     },
@@ -116,12 +116,13 @@ var eccData = {
       salaryData: { salary: 10000, costOfGettingIncome: 300, isAbove26YearsOld: false, isTaxFreeAmountEnabled: false },
       sumOfFirstIncomeTaxThreshold: 8485,
       sumOfSecondIncomeTaxThreshold: 0,
-      sumOfTaxPrepayment: 3996,
-    },    {
-      salaryData: { salary: 10000, costOfGettingIncome: 300, isAbove26YearsOld: false },
-      sumOfFirstIncomeTaxThreshold: 8485,
-      sumOfSecondIncomeTaxThreshold: 0,
-      sumOfTaxPrepayment: 2721,
+      sumOfTaxPrepayment: 1442,
+    },
+    {
+      salaryData: { salary: 20000, costOfGettingIncome: 300, isAbove26YearsOld: false },
+      sumOfFirstIncomeTaxThreshold: 34472,
+      sumOfSecondIncomeTaxThreshold: 90515,
+      sumOfTaxPrepayment: 31850,
     },
   ],
   zeroValues: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -320,16 +321,11 @@ describe("calculateTax()", () => {
   const ecc = new EmploymentContractCalculator();
   const sum = (array) => Math.round(_.reduce(array, (a, b) => a + b));
 
-  test.each(eccData.taxSets)("Given month's income 3500 and Then I expect tax of 0", (item) => {
+  test.each(eccData.taxSets)("Given month's income with settings and Then I expect tax to be exact", (item) => {
     ecc.setSalary(item.salaryData);
     ecc.calculate();
-
-    console.log(item.salaryData);
-    console.log(ecc.firstIncomeTaxThreshold.join(", "));
     expect(sum(ecc.firstIncomeTaxThreshold)).toBe(item.sumOfFirstIncomeTaxThreshold);
-    console.log(ecc.secondIncomeTaxThreshold.join(", "))
     expect(sum(ecc.secondIncomeTaxThreshold)).toBe(item.sumOfSecondIncomeTaxThreshold);
-    console.log(ecc.taxPrepayment.join(", "))
     expect(sum(ecc.taxPrepayment)).toBe(item.sumOfTaxPrepayment);
   });
 });

@@ -16,6 +16,10 @@ class EmploymentContractCalculator {
       contractData = {};
     }
 
+    this.resetData();
+  }
+
+  resetData() {
     this.isTaxFreeAmountEnabled = false;
     this.isAbove26YearsOld = false;
     this.salaryInMonths = [];
@@ -40,6 +44,7 @@ class EmploymentContractCalculator {
   }
 
   setSalary(data) {
+    this.resetData();
     var salary = 0;
     var costOfGettingIncome = 0;
     var employeeCapitalPlans = 0;
@@ -93,28 +98,41 @@ class EmploymentContractCalculator {
   }
 
   calculateTax() {
+    let zeroIncomeTaxThreshold = [];
+
+    const calcZeroTaxThreshold = (incomeAcc, income, threshold) => {
+      if ((threshold - incomeAcc) >= 0) return income;
+      else {
+        if (income + threshold - incomeAcc < 0) return 0;
+        else return income + threshold - incomeAcc;
+      }
+    };
+
+    const calcFirstTaxThreshold = (incomeAcc, income, incomeInZeroThreshold, threshold) => {
+      if ((incomeAcc - income) >= threshold) return 0;
+      else {
+        if (incomeAcc - threshold < 0) return income - incomeInZeroThreshold;
+        else return income - (incomeAcc - threshold);
+      }
+    };
+
+    const calcSecondTaxThreshold = (incomeAcc, income, incomeInFirstThreshold, threshold) => {
+      if ((incomeAcc - threshold) < 0) return 0;
+      else {
+        if ((incomeAcc - threshold) > income) return income;
+        else return income - incomeInFirstThreshold;
+      }
+    };
+
     for (let i = 0; i < 12; i++) {
-      this.firstIncomeTaxThreshold[i] = 0;
-      this.secondIncomeTaxThreshold[i] = 0;
       let reliefTaxFree = 0;
 
+      zeroIncomeTaxThreshold[i] = calcZeroTaxThreshold(this.incomeAcc[i], this.income[i], OldTaxThreshold);
+      this.firstIncomeTaxThreshold[i] = calcFirstTaxThreshold(this.incomeAcc[i], this.income[i], zeroIncomeTaxThreshold[i], TaxThreshold);
+      this.secondIncomeTaxThreshold[i] = calcSecondTaxThreshold(this.incomeAcc[i], this.income[i], this.firstIncomeTaxThreshold[i], TaxThreshold);
+
       if (this.isAbove26YearsOld) {
-        if (this.incomeAcc[i] < TaxThreshold) {
-          this.firstIncomeTaxThreshold[i] = this.income[i];
-        } else if (this.incomeAcc[i] >= TaxThreshold && this.incomeAcc[i] - TaxThreshold <= this.income[i]) {
-          // month's income is split between 1st and 2nd tax threshold
-          this.firstIncomeTaxThreshold[i] = this.income[i] + TaxThreshold - this.incomeAcc[i];
-          this.secondIncomeTaxThreshold[i] = this.incomeAcc[i] - TaxThreshold;
-        } else {
-          this.secondIncomeTaxThreshold[i] = this.income[i];
-        }
-      } else {
-        if (this.incomeAcc[i] >= OldTaxThreshold && this.incomeAcc[i] - OldTaxThreshold <= this.income[i]) {
-          this.firstIncomeTaxThreshold[i] = this.incomeAcc[i] - OldTaxThreshold;
-        }
-        else if (this.incomeAcc[i] >= OldTaxThreshold) {
-          this.firstIncomeTaxThreshold[i] = this.income[i];
-        }
+        this.firstIncomeTaxThreshold[i] = this.firstIncomeTaxThreshold[i] + zeroIncomeTaxThreshold[i];
       }
 
       if (this.isTaxFreeAmountEnabled) {
@@ -125,7 +143,7 @@ class EmploymentContractCalculator {
       }
 
       const taxPrepayment = round(this.firstIncomeTaxThreshold[i] * 0.17 + this.secondIncomeTaxThreshold[i] * 0.32 - reliefTaxFree, 2);
-      this.taxPrepayment[i] = (taxPrepayment < 0) ? taxPrepayment + reliefTaxFree : taxPrepayment;
+      this.taxPrepayment[i] = taxPrepayment < 0 ? taxPrepayment + reliefTaxFree : taxPrepayment;
       this.reliefTaxFree[i] = reliefTaxFree;
     }
   }
